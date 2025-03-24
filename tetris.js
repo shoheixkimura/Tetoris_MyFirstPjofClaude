@@ -472,6 +472,41 @@ muteButton.addEventListener('click', () => {
     muteButton.classList.toggle('muted', isMuted);
 });
 
+// 音声テスト用のボタン
+const testSoundButton = document.getElementById('test-sound');
+testSoundButton.addEventListener('click', () => {
+    // まず音声システムを初期化
+    soundManager.initializeAudio();
+    
+    // テスト用のメッセージを表示
+    console.log('音声テスト開始...');
+    
+    // 各効果音を順番に再生
+    const testSounds = ['rotate', 'move', 'drop', 'clear', 'tetris', 'levelup', 'gameover'];
+    let delay = 0;
+    
+    // 効果音を一つずつ間隔を開けて再生
+    testSounds.forEach((sound, index) => {
+        setTimeout(() => {
+            console.log(`${sound} 効果音を再生中...`);
+            soundManager.playSFX(sound);
+        }, delay);
+        delay += 600; // 各効果音に600ミリ秒の間隔
+    });
+    
+    // 最後にBGMを短く再生
+    setTimeout(() => {
+        console.log('BGM再生テスト...');
+        // BGMを再生して1秒後に停止
+        soundManager.playBGM();
+        setTimeout(() => {
+            soundManager.pauseBGM();
+            console.log('音声テスト完了!');
+            alert('すべての音が聞こえましたか？\n音が聞こえない場合は、以下を確認してください：\n1. ブラウザの設定でサイトの音声が許可されているか\n2. デバイスの音量が上がっているか\n3. ブラウザのコンソールでエラーメッセージがないか');
+        }, 2000);
+    }, delay);
+});
+
 // ゲームの初期設定
 player.matrix = createPiece(0);
 playerReset();
